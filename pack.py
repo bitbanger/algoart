@@ -110,8 +110,6 @@ for circ in circles:
 	
 	clr = clr1 + clr2
 	
-	if clr > 240:
-		clr = 240
 	draw_circle(circ.x, circ.y, circ.rad - 1, draw, color = (clr, clr, clr))
 
 # print ["%d, %d, %d" % (c.x, c.y, c.rad) for c in circles]
