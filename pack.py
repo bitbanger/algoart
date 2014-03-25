@@ -55,7 +55,7 @@ def rand_in_circle(x, y, rad):
 	return (px, py)
 
 def rgb_to_hex(rgb):
-	return "#" + reduce(concat, map(lambda x: hex(x)[2:], rgb))
+	return "#" + reduce(concat, map(lambda x: "%02x" % x, rgb))
 
 im = Image.new("RGB", img_dim, "white")
 
