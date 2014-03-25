@@ -1,18 +1,21 @@
 from math import *
+from operator import concat
 from random import randint, random
 
 import Image, ImageDraw
+import pysvg.structure
+import pysvg.builders
 
 grace_border = 0
-img_dim = (1024, 1024)
+img_dim = (512, 512)
 img_height = img_dim[0]
 img_width = img_dim[1]
 
 img_xmid = img_width/2
 img_ymid = img_height/2
 
-min_circ_rad = 150
-max_circ_rad = 250
+min_circ_rad = 50
+max_circ_rad = 100
 
 class Circle:
 	__slots__ = ('x', 'y', 'rad', 'neighbors')
@@ -50,15 +53,20 @@ def rand_in_circle(x, y, rad):
 	py = prad * sin(pang)
 	
 	return (px, py)
-	
+
+def rgb_to_hex(rgb):
+	return "#" + reduce(concat, map(lambda x: hex(x)[2:], rgb))
 
 im = Image.new("RGB", img_dim, "white")
 
 draw = ImageDraw.Draw(im)
 
+svg = pysvg.structure.svg()
+sb = pysvg.builders.ShapeBuilder()
+
 # start coming up with circles
 
-num_circles = 2000
+num_circles = 1000
 circles = []
 
 for i in range(num_circles):
@@ -111,8 +119,11 @@ for circ in circles:
 	clr = clr1 + clr2
 	
 	draw_circle(circ.x, circ.y, circ.rad - 1, draw, color = (clr, clr, clr))
+	svg.addElement(sb.createCircle(circ.x, circ.y, circ.rad, strokewidth = 0, fill = rgb_to_hex((clr, clr, clr))))
 
 # print ["%d, %d, %d" % (c.x, c.y, c.rad) for c in circles]
 
 
 im.save("pack.png", "PNG")
+
+svg.save("pack.svg")
