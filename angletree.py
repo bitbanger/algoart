@@ -2,6 +2,7 @@ from math import *
 from operator import concat
 from random import randint, random
 
+import colorsys
 import pysvg.structure
 import pysvg.builders
 
@@ -53,17 +54,32 @@ circles.append(root)
 
 # Make the tree
 depth = 6
-branching_factor = 7
+branching_factor = 6
 make_tree(root, branching_factor, depth)
 
 # Make the SVG
 svg = pysvg.structure.svg()
 sb = pysvg.builders.ShapeBuilder()
 
+bot_y = min(circles, key = lambda circ: circ.y).y
+top_y = max(circles, key = lambda circ: circ.y).y
+
+bot_x = min(circles, key = lambda circ: circ.x).x
+
 for circ in circles:
-	darkness = (float(circ.depth) / depth) * 255
-	color = rgb_to_hex((darkness, darkness, darkness))
-	svg.addElement(sb.createCircle(circ.x, circ.y, circ.rad, strokewidth = 0, fill = color))
+	# darkness = (float(circ.depth) / depth) * 255
+	
+	light = float(circ.depth) / depth
+	
+	hue = float(circ.y - bot_y) / (top_y - bot_y)
+	
+	sat = float(circ.depth) / depth
+	
+	rgb = map(lambda x: int(255 * x), colorsys.hls_to_rgb(hue, light, sat))
+	
+	color = rgb_to_hex(rgb)
+	
+	svg.addElement(sb.createCircle(circ.x - bot_x, circ.y - bot_y, circ.rad, strokewidth = 0, fill = color))
 
 # Hack fill opacity in because PySVG doesn't have it :(
 xml = svg.getXML().replace("; \"", "; fill-opacity:0.75; \"")
@@ -71,7 +87,6 @@ xml = svg.getXML().replace("; \"", "; fill-opacity:0.75; \"")
 with open("angletree.svg", "w") as f:
 	f.write(xml)
 
-f.close()
 	
 	
 	

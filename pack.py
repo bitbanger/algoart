@@ -2,12 +2,13 @@ from math import *
 from operator import concat
 from random import randint, random
 
+import colorsys
 import Image, ImageDraw
 import pysvg.structure
 import pysvg.builders
 
 grace_border = 0
-img_dim = (512, 512)
+img_dim = (1024, 1024)
 img_height = img_dim[0]
 img_width = img_dim[1]
 
@@ -66,7 +67,7 @@ sb = pysvg.builders.ShapeBuilder()
 
 # start coming up with circles
 
-num_circles = 1000
+num_circles = 3000
 circles = []
 
 for i in range(num_circles):
@@ -118,8 +119,16 @@ for circ in circles:
 	
 	clr = clr1 + clr2
 	
-	draw_circle(circ.x, circ.y, circ.rad - 1, draw, color = (clr, clr, clr))
-	svg.addElement(sb.createCircle(circ.x, circ.y, circ.rad, strokewidth = 0, fill = rgb_to_hex((clr, clr, clr))))
+	light = float(clr) / 255
+	
+	hue = float(circ.y) / img_height
+	
+	sat = 1
+	
+	rgb = map(lambda x: int(255 * x), colorsys.hls_to_rgb(hue, light, sat))
+	
+	draw_circle(circ.x, circ.y, circ.rad - 1, draw, color = (rgb[0], rgb[1], rgb[2]))
+	svg.addElement(sb.createCircle(circ.x, circ.y, circ.rad, strokewidth = 0, fill = rgb_to_hex(rgb)))
 
 # print ["%d, %d, %d" % (c.x, c.y, c.rad) for c in circles]
 
