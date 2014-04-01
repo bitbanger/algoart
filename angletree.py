@@ -54,7 +54,7 @@ circles.append(root)
 
 # Make the tree
 depth = 6
-branching_factor = 6
+branching_factor = 7
 make_tree(root, branching_factor, depth)
 
 # Make the SVG
