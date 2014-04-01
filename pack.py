@@ -47,7 +47,7 @@ def rand_color():
 
 def rand_in_circle(x, y, rad):
 	# First, generate random polar coordinates
-	prad = random() * rad
+	prad = sqrt(random()) * rad
 	pang = random() * (2 * pi)
 	
 	px = prad * cos(pang)
