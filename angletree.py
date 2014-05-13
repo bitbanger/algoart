@@ -1,6 +1,6 @@
 from math import *
 from operator import concat
-from random import randint, random
+from random import randint, random, choice, uniform
 
 import colorsys
 import pysvg.structure
@@ -28,11 +28,12 @@ def rgb_to_hex(rgb):
 	return "#" + reduce(concat, map(lambda x: "%02x" % x, rgb))
 
 def make_child(circle):
-	ang = random() * (2 * pi)
-	px = (1.5 * circle.rad) * cos(ang) + circle.x
-	py = (1.5 * circle.rad) * sin(ang) + circle.y
+	# ang = random() * (1 * pi)
+	ang = uniform(1.9 * pi, 2.1 * pi) if random() < 0.10 else uniform(.9 * pi, 1.1 * pi)
+	px = (2 * circle.rad) * cos(ang) + circle.x
+	py = (2 * circle.rad) * sin(ang) + circle.y
 	
-	return Circle(px, py, circle.rad/2, circle.depth + 1)
+	return Circle(px, py, circle.rad * 0.5, circle.depth + 1)
 
 def make_tree(root, branch, depth):
 	if depth == 0:
@@ -64,22 +65,35 @@ sb = pysvg.builders.ShapeBuilder()
 bot_y = min(circles, key = lambda circ: circ.y).y
 top_y = max(circles, key = lambda circ: circ.y).y
 
-bot_x = min(circles, key = lambda circ: circ.x).x
+bot_x_circ = min(circles, key = lambda circ: circ.x - circ.rad)
+bot_x = bot_x_circ.x - bot_x_circ.rad
+
+bot_y_circ = min(circles, key = lambda circ: circ.y - circ.rad)
+bot_y = bot_y_circ.y - bot_y_circ.rad
+
+highest_dist_circ = max(circles, key = lambda circ: sqrt((circ.x - bot_x)**2 + (circ.y-bot_y)**2))
+highest_dist = sqrt((highest_dist_circ.x - bot_x)**2 + (highest_dist_circ.y - bot_y)**2)
 
 for circ in circles:
 	# darkness = (float(circ.depth) / depth) * 255
 	
-	light = float(circ.depth) / depth
+	# light = float(circ.depth) / depth
+	light = 0.5
 	
-	hue = float(circ.y - bot_y) / (top_y - bot_y)
+	# hue = float(circ.y - bot_y) / (top_y - bot_y)
 	
-	sat = float(circ.depth) / depth
+	hue = sqrt((circ.x - bot_x)**2 + (circ.y - bot_y)**2) / highest_dist
+	hue += choice((-1, 1)) * random() * 0.25
+	
+	# sat = float(circ.depth) / depth
+	sat = 0.5
 	
 	rgb = map(lambda x: int(255 * x), colorsys.hls_to_rgb(hue, light, sat))
 	
 	color = rgb_to_hex(rgb)
 	
-	svg.addElement(sb.createCircle(circ.x - bot_x, circ.y - bot_y, circ.rad, strokewidth = 0, fill = color))
+	if(circ.depth > 2):
+		svg.addElement(sb.createCircle(circ.x - bot_x, circ.y - bot_y, circ.rad, strokewidth = 0, fill = color))
 
 # Hack fill opacity in because PySVG doesn't have it :(
 xml = svg.getXML().replace("; \"", "; fill-opacity:0.75; \"")
