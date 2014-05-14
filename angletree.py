@@ -28,11 +28,11 @@ def rgb_to_hex(rgb):
 	return "#" + reduce(concat, map(lambda x: "%02x" % x, rgb))
 
 def make_child(circle):
-	ang = uniform(1.8 * pi, 2.2 * pi) if random() < 0.5 else uniform(.8 * pi, 1.2 * pi)
+	ang = uniform(1.95 * pi, 2.15 * pi) if random() < 0.10 else uniform(.85 * pi, 1.15 * pi)
 	px = (2 * circle.rad) * cos(ang) + circle.x
 	py = (2 * circle.rad) * sin(ang) + circle.y
 	
-	return Circle(px, py, circle.rad * 0.5, circle.depth + 1)
+	return Circle(px, py, circle.rad * 0.55, circle.depth + 1)
 
 def make_tree(root, branch, depth):
 	if depth == 0:
@@ -73,6 +73,11 @@ bot_y = bot_y_circ.y - bot_y_circ.rad
 highest_dist_circ = max(circles, key = lambda circ: sqrt((circ.x - bot_x)**2 + (circ.y-bot_y)**2))
 highest_dist = sqrt((highest_dist_circ.x - bot_x)**2 + (highest_dist_circ.y - bot_y)**2)
 
+top_x_circ = max(circles, key = lambda circ: circ.x + circ.rad)
+top_x = top_x_circ.x + top_x_circ.rad
+
+flip = False
+
 for circ in circles:
 	# darkness = (float(circ.depth) / depth) * 255
 	
@@ -92,7 +97,8 @@ for circ in circles:
 	color = rgb_to_hex(rgb)
 	
 	if(circ.depth > 2):
-		svg.addElement(sb.createCircle(circ.x - bot_x, circ.y - bot_y, circ.rad, strokewidth = 0, fill = color))
+		svg.addElement(sb.createCircle((1.25*top_x - (circ.x - bot_x) if flip else circ.x - bot_x), circ.y - bot_y, circ.rad, strokewidth = 0, fill = color))
+		flip = not flip
 
 # Hack fill opacity in because PySVG doesn't have it :(
 xml = svg.getXML().replace("; \"", "; fill-opacity:0.75; \"")
