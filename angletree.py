@@ -28,7 +28,8 @@ def rgb_to_hex(rgb):
 	return "#" + reduce(concat, map(lambda x: "%02x" % x, rgb))
 
 def make_child(circle):
-	ang = uniform(1.8 * pi, 2.2 * pi) if random() < 0.5 else uniform(.8 * pi, 1.2 * pi)
+	# ang = random() * (1 * pi)
+	ang = uniform(1.9 * pi, 2.1 * pi) if random() < 0.10 else uniform(.9 * pi, 1.1 * pi)
 	px = (2 * circle.rad) * cos(ang) + circle.x
 	py = (2 * circle.rad) * sin(ang) + circle.y
 	
