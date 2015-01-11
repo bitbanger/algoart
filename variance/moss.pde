@@ -133,6 +133,8 @@ class Cracker {
   float theta;
   float thetav;
   
+  int lastX, lastY;
+  
   float otheta;
   
   int life;
@@ -172,10 +174,12 @@ class Cracker {
       life = 0;
     }
     
-    if(depth > 0 && random(1.0) < BRANCH_PROB) {
-      float ang = (otheta+90)%360;
+    if(depth > 0 && random(1.0) < BRANCH_PROB && life > 0) {
+      float ang = ang(otheta+CHILD_ANG);
       if(random(1.0) < 0.5) ang = (otheta-90)%360;
       Cracker child = new Cracker(x, y, 1.0, ang, 1.0, depth-1, int(life*0.25));
+      child.lastX = lastX;
+      child.lastY = lastY;
       newCrackers.add(child);
       
       // child.target = crackers.get(int(random(crackers.size())));
@@ -185,8 +189,8 @@ class Cracker {
     int nx = max(0, min(xDim-1, int(x)));
     int ny = max(0, min(yDim-1, int(y)));
     
-    if(hit[nx][ny] > 10000 || abs(hit[nx][ny]-otheta) < 5) {
-      
+    if(hit[nx][ny] > 10000 || abs(hit[nx][ny]-theta) < 5) {
+    // if(hit[nx][ny] > 10000) {
       if(target != null && target.life > 0) {
         float dx = x-target.x;
         float dy = y-target.y;
@@ -197,7 +201,6 @@ class Cracker {
           strokeWeight(2.5);
           float z = 0;
           fill(0, 0, 0, 0);
-          // line(x, y, target.x+random(-z,z), target.y+random(-z,z));
           float tx = min(x, target.x);
           float ty = min(y, target.y);
           float bx = max(x, target.x);
@@ -207,13 +210,14 @@ class Cracker {
           
           float ang = atan2(dy, dx);
           
-          // arc(tx, ty, w, h, 0, TWO_PI);
-          line(x, y, target.x, target.y);
+          // line(x, y, target.x, target.y);
           stroke(0, 0, 0, 80);
           strokeWeight(1);
           // point(x, y);
         }
+        // point(x, y);
       }
+      point(x, y);
       
       
       float mag = random(100, 256);
@@ -229,10 +233,14 @@ class Cracker {
       }*/
       
       
-      hit[nx][ny] = int(otheta);
-    } else if(abs(hit[nx][ny]-otheta) > 2) {
+      hit[nx][ny] = int(theta);
+    // } else if(nx != lastX && ny != lastY) {
+    } else if(abs(hit[nx][ny]-theta) > 5) {
       life = 0;
     }
+    
+    lastX = nx;
+    lastY = ny;
   }
 }
 
