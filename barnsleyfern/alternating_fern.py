@@ -28,46 +28,27 @@ def rgb_to_hex(rgb):
 	return "#" + reduce(concat, map(lambda x: "%02x" % x, rgb))
 
 def make_child(circle):
-	# ang = random() * (1 * pi)
-#	ang = uniform(1.9 * pi, 2.1 * pi) if random() < 0.10 else uniform(.9 * pi, 1.1 * pi)
-#	px = (2 * circle.rad) * cos(ang) + circle.x
-#	py = (2 * circle.rad) * sin(ang) + circle.y
+
 	transform = random()
         
         if (transform < .01):
                 px = 0
-                # 0
                 py = (0.16*circle.y)
-                # 0
+
         elif (transform < 0.86):
                 px = (0.85*circle.x + 0.04*circle.y) 
                 py = (-0.04*circle.x + 0.85*circle.y + 1.6) + 250
-# 200
+
         elif (transform < .93):
                 px = (0.2*circle.x - 0.26*circle.y) 
-#-50
                 py = (0.23*circle.x + 0.22*circle.y + 1.6) + 175
-# 0
+
         elif (transform < 1.0 ):
                 px = (-.15*circle.x + 0.28*circle.y) 
-#+ 50
                 py = (.26*circle.x + 0.24*circle.y + 0.44) + 50
-# -100
+
 	return Circle(px, py, circle.rad , circle.depth + 1)
 
-# def make_tree(root, branch, depth):
-# 	if depth == 0:
-# 		return
-	
-# 	children = []
-	
-# 	for _ in range(branch):
-# 		child = make_child(root)
-# 		children.append(child)
-# 		circles.append(child)
-	
-# 	for child in children:
-# 		make_tree(child, branch, depth - 1)
 
 def make_tree(root, branch, depth):
       
@@ -82,7 +63,6 @@ def make_tree(root, branch, depth):
 
 # Add the root
 root = Circle(img_xmid, img_ymid, starting_rad, 0)
-#root = Circle(0, 0, starting_rad, 0)
 circles.append(root)
 
 # Make the tree
@@ -107,21 +87,11 @@ highest_dist_circ = max(circles, key = lambda circ: sqrt((circ.x - bot_x)**2 + (
 highest_dist = sqrt((highest_dist_circ.x - bot_x)**2 + (highest_dist_circ.y - bot_y)**2)
 
 for circ in circles:
-	# darkness = (float(circ.depth) / depth) * 255
-	
-	# light = float(circ.depth) / depth
-	light = 0.5
-	
-        hue = 1.17 + (float(circ.y - bot_y) /(2.5* (top_y - bot_y)))
-	
-#	hue = sqrt((circ.x - bot_x)**2 + (circ.y - bot_y)**2) / highest_dist
-#	hue += choice((-1, 1)) * random() * .25
 
-	# sat = float(circ.depth) / depth
+	light = 0.5
+        hue = 1.17 + (float(circ.y - bot_y) /(2.5* (top_y - bot_y)))
 	sat = 0.5
-	
 	rgb = map(lambda x: int(255* x), colorsys.hls_to_rgb(hue, light, sat))
-	
 	color = rgb_to_hex(rgb)
 	
 	if(circ.depth > 2):
