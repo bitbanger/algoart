@@ -1,4 +1,7 @@
 *.svg
 *.mpg
 *.tif
+*.png
+*.o
+*~
 vid
