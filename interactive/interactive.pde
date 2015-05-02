@@ -8,10 +8,16 @@ int mode = M_RECT;
 
 int xDim = 1920;
 int yDim = 1080;
+boolean FULL_SCREEN = false;
+
+float shapeVel = 10;
+float shapeAlph = 100;
 
 float SCALE_FAC = 1;
 
 int numCrackers = 0;
+
+color squareC;
 
 ArrayList<Cracker> crackers = new ArrayList<Cracker>();
 ArrayList<Cracker> newCrackers = new ArrayList<Cracker>();
@@ -39,8 +45,8 @@ boolean LINEAGE_COLORING = true;
 final float GHOST_DECAY = 50;
 float ghostDecay = GHOST_DECAY;
 
-int DEPTH = 1;
-int COOLDOWN = 20;
+int DEPTH = 2;
+int COOLDOWN = 10;
 int SEED = NO_SEED;
 
 // BEAUTIFUL: 
@@ -54,7 +60,7 @@ int SEED = NO_SEED;
 boolean paused = false;
 
 boolean sketchFullScreen() {
-  return true;
+  return FULL_SCREEN;
 }
 
 void keyPressed() {
@@ -70,6 +76,13 @@ void keyPressed() {
       break;
     case 't':
       ghostDecay = GHOST_DECAY - ghostDecay;
+      break;
+    case '-':
+      COOLDOWN = max(10, COOLDOWN-10);
+      break;
+    case '=':
+      COOLDOWN = min(100, COOLDOWN+10);
+      break;
   }
 }
 
@@ -85,6 +98,8 @@ void setup() {
     randomSeed(SEED);
     println("seeding w/ " + SEED);
   }
+  
+  squareC = randColor();
   // 4388 has a connected thing w/ branch prob 0.1, ang var 20deg
   // branch prob 1, ang var 1, seed 4388 is interesting
   // bp1, av10, s4388
@@ -148,10 +163,14 @@ void mouseDragged() {
   }
   lastMX = mouseX;
   lastMY = mouseY;
-  Cracker c = new Cracker(mouseX, mouseY, 1, theta, 0, 4, LIFE);
+  Cracker c = new Cracker(mouseX, mouseY, 1, theta, 0, DEPTH, LIFE);
   c.myMode = mode;
   println(mode);
   newCrackers.add(c);
+}
+
+boolean isIn(float x, float a, float b) {
+  return x >= a && x <= b;
 }
 
 void draw() {
@@ -161,10 +180,42 @@ void draw() {
   
   scale(SCALE_FAC);
   
+  rectMode(CORNER);
+  // stroke(0x00, 0x50, 0x90, shapeAlph);
+  fill(colors[0], shapeAlph);
+  rect(4, 4, 75, 75);
+  // stroke(0x50, 0x00, 0x90, shapeAlph);
+  fill(colors[700], shapeAlph);
+  ellipse(40, 150, 75, 75);
+  // stroke(0x00, 0x90, 0x20, shapeAlph);
+  fill(colors[1000], shapeAlph);
+  rect(4, 230, 75, 10);
+  
+ // shapeAlph += shapeVel;
+  if(shapeAlph > 200) {
+    shapeVel = -3;
+  } else if(shapeAlph < 60) {
+    shapeVel = 3;
+  }
+  println(shapeAlph);
+  
   if(mousePressed) {
-    Cracker c = new Cracker(mouseX, mouseY, 1, 0, 0, 3, LIFE);
-    c.myMode = mode;
-    newCrackers.add(c);
+    if(isIn(mouseX, 0, 75)) {
+      if(isIn(mouseY, 0, 75)) {
+        mode = M_RECT;
+      }
+      if(isIn(mouseY, 75, 225)) {
+        mode = M_CIRC;
+      }
+      if(isIn(mouseY, 230, 305)) {
+        mode = M_LINE;
+      }
+      println(mouseY);
+    } else {
+      Cracker c = new Cracker(mouseX, mouseY, 1, 0, 0, DEPTH, LIFE);
+      c.myMode = mode;
+      newCrackers.add(c);
+    }
   }
   
   fill(0, 0, 0, ghostDecay);
@@ -366,7 +417,8 @@ class Cracker {
               rect(x, y, target.x, target.y);
               break;
             case M_CIRC:
-              ellipse(x, y, dist, dist);
+              float rad = random(10, 15);
+              ellipse(x, y, rad, rad);
               break;
           }
           
