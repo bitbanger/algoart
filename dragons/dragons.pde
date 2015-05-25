@@ -2,14 +2,14 @@ import java.awt.Color;
 
 
 int colorconst = 125;
-int dim = 1000;
+int dim =500;
 int check_until = 2000;
 
-double zoom = 2.0;
+double zoom = 1;
 double dimScale = (4.0/dim)/zoom;
 
-double cx = -.5214;
-double cy = 0.02;
+double cx = -.8214;
+double cy = 0.2;
 
 
 void setup(){
