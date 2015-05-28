@@ -2,7 +2,7 @@ import java.awt.Color;
 
 
 int colorconst = 125;
-int dim =500;
+int dim =5000;
 int check_until = 2000;
 
 double zoom = 1;

@@ -1,17 +1,10 @@
-import java.awt.Color;
-//real component
-double r;
-//imaginary component
-double im;
 
-// R(P(r + im))
-double pr;
-// I(P(r + im))
-double pim;
 
 int colorconst = 100;
-int xdim = 800;
-int ydim = 600;
+//int xdim = 800;
+//int ydim = 600;
+int xdim = 5600;
+int ydim = 4200;
 int check_until = 3000;
 
 double zoom = 1;

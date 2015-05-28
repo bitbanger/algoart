@@ -3,18 +3,19 @@ import java.awt.Color;
 int satconst = 150;
 int colorconst = 45;
 int brightconst = 100;
-int dim = 750;
-int check_until = 36;
+int xdim = 2000;
+int ydim = 3000;
+int check_until = 40;
 
-double zoom = 0.75;
-double dimScale = (4.0/dim)/zoom;
+double zoom = 0.83;
+double dimScale = (4.0/xdim)/zoom;
 
 double cx = .25;
 double cy = -0.75;
 
 
 void setup(){
- size(dim+150, dim+150, P2D);
+ size(xdim, ydim, P2D);
  background(0xFF, 0xFF, 0xFF, 0xFF);
  
  colorMode(HSB);
@@ -22,10 +23,10 @@ void setup(){
 
 void draw(){
   
-for (int x = 0; x < dim; x++){
-  for (int y = 0; y < dim; y++){
-      double zx = (x - dim/2)/(0.5*zoom*dim);
-      double zy = (y - dim/2.0)/(0.5*zoom*dim);
+for (int x = 0; x < xdim; x++){
+  for (int y = 0; y < ydim; y++){
+      double zx = (x - xdim/2)/(0.5*zoom*xdim);
+      double zy = (y - ydim/2.0)/(0.5*zoom*xdim);
       
       double newzx = 0;
       double newzy = 0;
@@ -50,9 +51,9 @@ for (int x = 0; x < dim; x++){
     }
     
     stroke(c); 
-    point(x+75, y+75);
+    point(x, y);
     
   }
 }
-save("sylvan1.png");
+save("sylvanprint.png");
 }

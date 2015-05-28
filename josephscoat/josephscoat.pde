@@ -1,7 +1,7 @@
 import java.awt.Color;
 
 int colorconst = 240;
-int dim = 750;
+int dim = 2000;
 int check_until = 200;
 
 double zoom = 2;
@@ -12,9 +12,10 @@ double cy = -0.6;
 
 
 void setup(){
- size(dim+200, dim+200, P2D);
+ size(dim, dim, P2D);
  background(0xFF, 0xFF, 0xFF);
  colorMode(HSB);
+ noLoop();
 }
 
 void draw(){
@@ -45,7 +46,7 @@ for (int x = 0; x < dim; x++){
       c = color((i + colorconst) % 256, 255, 0) ;
     }
     stroke(c); 
-    point(x+100, y+100);
+    point(x, y);
     
   }
 }
