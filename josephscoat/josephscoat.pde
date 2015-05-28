@@ -1,4 +1,3 @@
-import java.awt.Color;
 
 int colorconst = 240;
 int dim = 2000;
@@ -29,8 +28,6 @@ for (int x = 0; x < dim; x++){
       double newzy = 0;
       int i = 0;
     while( (zx * zx + zy * zy)  < 4 && (i < check_until)){ 
-      //newzy = 3.0* zx* zx * zy - zy*zy*zy + scaledy;
-      //newzx = zx * zx *zx - 3* zy*zy *zx + scaledx;
       newzy = 2.0* zx * zy + cy;
       newzx = zx * zx - zy*zy + cx;
       zy = newzy;
@@ -38,8 +35,6 @@ for (int x = 0; x < dim; x++){
       i ++;
     }
     color c = color((i + colorconst) % 256, 255, 255 );
-    
-    //color c = color.HSBtoRGB((i + colorconst) % 255, 255, 255* (i < check_until));
     
     if (i > (check_until - 1)){
       
