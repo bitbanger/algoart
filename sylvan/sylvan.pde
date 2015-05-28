@@ -1,4 +1,4 @@
-import java.awt.Color;
+
 
 int satconst = 150;
 int colorconst = 45;
@@ -40,10 +40,10 @@ for (int x = 0; x < xdim; x++){
       zx = newzx;
       i ++;
     }
-    //color c = color((i + colorconst) % 256, 255, 255 );
+
     color c = color((i*3 + colorconst) % 256, 255 - (i*6+satconst) %256, 
       255 );
-    //color c = color.HSBtoRGB((i + colorconst) % 255, 255, 255* (i < check_until));
+
     
     if (i > (check_until - 1)){
       
@@ -55,5 +55,5 @@ for (int x = 0; x < xdim; x++){
     
   }
 }
-save("sylvanprint.png");
+save("sylvan.png");
 }
