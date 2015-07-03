@@ -53,63 +53,31 @@ void draw(){
   
   count ++;
   if (!paused) {
- // fill(0xFF, 10);
- // rect(0, 0, xdim, ydim); 
   translate( x0 - x0/3, y0 + y0/4, z0 - z0/2); 
   if (count == 700){
     fill(0xFF);
    rect(-xdim, -ydim, 2*xdim, 2*ydim); 
   }
   if (count > 700){
-    //x = 172
-    //y = 211
-  //rotateY((.17583*ydim*2*PI) / height);
-  rotateY((.12*ydim*2*PI)/height);
- // rotateY((211*2*PI)/ height);
-  //rotateX((172*2*PI)/width);
- // rotateX((.14333*xdim*2*PI) / width);
- rotateX((.04*xdim*2*PI)/width);
+   rotateY((.12*ydim*2*PI)/height);
+   rotateX((.04*xdim*2*PI)/width);
  }
   else {
     rotateY((0.145*ydim*2*PI) / height);
     rotateX((.8758*xdim*2*PI )/ width);
-   // rotateY((174*2*PI) / height);
-    //rotateX((1051*2*PI) / width);
-  }
-  
-  //y = 174, x = 1051
- // rotateX(mouseY * 2*PI / height);
-// rotateY(mouseX * 2*PI / width); 
-//  println(mouseY);
-// println(mouseX);
- // println("Count = %d \n", count);
-   //lorenzParticle p = new lorenzParticle(100.0, 100.0, 100.0, 0.0, 0.0, 0.0, sigma, rho, beta);
-   
-   //for (int i = 0; i < maxIt; i++){
-   //  p.move();
-   //}
-   
-
-   
-   
-   //for (int i = 0; i < maxIt; i++ ){
+    }
+    
      dx = sigma*(y - x);
      dy = x*(rho - z) - y;
      dz = x*y - beta*z;
   
      scale = (distance/sqrt(dx*dx + dy*dy + dz*dz));
      
-  //   stroke ( (2*x + 2*y + 2*x + xdim ) %255, 255, 255);
      stroke ( (2*x + 2*y + 2*z + xdim -25 ) % 255 , 255, 255);
-    // stroke( frameCount % 255);
- //    stroke ( (mouseX) % 255, (mouseX + mouseY) % 255, (mouseY) % 255);
-     //line(x, y, z, x + scale*dx, y + scale*dy, z + scale*dz);
      line(stretch*x, stretch*y , stretch*z, stretch*(x + scale*dx), stretch*(y + scale*dy) , stretch*(z + scale*dz));
      x += scale*dx;
      y += scale*dy;
      z += scale*dz; 
- //    println("x = %d, y = %d, z = %d \n", x, y, z);
-
   }
 }
 
